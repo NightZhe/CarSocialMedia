@@ -1,33 +1,29 @@
-
-export interface Meal {
+export interface Car {
   id: string;
-  timestamp: Date;
-  type: 'Breakfast' | 'Lunch' | 'Dinner' | 'Snack';
-  name: string;
-  calories: number;
-  macros: {
-    protein: number;
-    carbs: number;
-    fat: number;
-  };
-  image?: string;
-  feedback?: string;
-  isOrdered?: boolean;
-}
-
-export interface DailyQuest {
-  id: string;
-  title: string;
+  make: string;
+  model: string;
+  year: number;
+  price: number;
+  mileage: number;
+  color: string;
+  transmission: 'automatic' | 'manual';
+  fuelType: 'gasoline' | 'diesel' | 'electric' | 'hybrid';
+  condition: 'excellent' | 'good' | 'fair';
   description: string;
-  points: number;
-  completed: boolean;
+  images: string[];
+  features: string[];
+  isAvailable: boolean;
+  createdAt: string;
+  views: number;
 }
 
-export enum AppTab {
-  DASHBOARD = 'dashboard',
-  COACH = 'coach',
-  LOG = 'log',
-  DELIVERY = 'delivery',
-  COMMUNITY = 'community',
-  PROFILE = 'profile'
+export interface FilterState {
+  search: string;
+  minPrice: number | '';
+  maxPrice: number | '';
+  transmission: string;
+  fuelType: string;
+  condition: string;
 }
+
+export type AppMode = 'customer' | 'merchant';
