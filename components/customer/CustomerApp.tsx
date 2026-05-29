@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Car } from '../../types';
 import CarGallery from './CarGallery';
 import CarDetail from './CarDetail';
@@ -9,7 +10,6 @@ type CustomerTab = 'browse' | 'search' | 'favorites';
 
 interface Props {
   cars: Car[];
-  onSwitchToMerchant: () => void;
 }
 
 const fmt = (price: number) => {
@@ -17,7 +17,8 @@ const fmt = (price: number) => {
   return `${wan % 1 === 0 ? wan.toFixed(0) : wan.toFixed(1)}萬`;
 };
 
-const CustomerApp: React.FC<Props> = ({ cars, onSwitchToMerchant }) => {
+const CustomerApp: React.FC<Props> = ({ cars }) => {
+  const navigate = useNavigate();
   const [tab, setTab] = useState<CustomerTab>('browse');
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [favorites, setFavorites] = useState<string[]>(() => {
@@ -121,7 +122,7 @@ const CustomerApp: React.FC<Props> = ({ cars, onSwitchToMerchant }) => {
           icon={<Heart size={22} />}
           label={favorites.length > 0 ? `收藏 (${favorites.length})` : '收藏'}
         />
-        <NavBtn active={false} onClick={onSwitchToMerchant} icon={<Store size={22} />} label="商家後台" />
+        <NavBtn active={false} onClick={() => navigate('/merchant')} icon={<Store size={22} />} label="商家後台" />
       </nav>
 
       {selectedCar && (

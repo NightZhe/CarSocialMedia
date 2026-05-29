@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Car, AppMode } from './types';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Car } from './types';
 import CustomerApp from './components/customer/CustomerApp';
 import MerchantApp from './components/merchant/MerchantApp';
 import MerchantLogin from './components/merchant/MerchantLogin';
@@ -137,7 +138,6 @@ const DEMO_CARS: Car[] = [
 const STORAGE_KEY = 'usedCarSales_v1';
 
 const App: React.FC = () => {
-  const [mode, setMode] = useState<AppMode>('customer');
   const [merchantLoggedIn, setMerchantLoggedIn] = useState(false);
   const [cars, setCars] = useState<Car[]>(() => {
     try {
@@ -156,31 +156,26 @@ const App: React.FC = () => {
   const updateCar = (updated: Car) => setCars(prev => prev.map(c => c.id === updated.id ? updated : c));
   const deleteCar = (id: string) => setCars(prev => prev.filter(c => c.id !== id));
 
-  if (mode === 'merchant') {
-    if (!merchantLoggedIn) {
-      return (
-        <MerchantLogin
-          onLogin={() => setMerchantLoggedIn(true)}
-          onBack={() => setMode('customer')}
-        />
-      );
-    }
-    return (
-      <MerchantApp
-        cars={cars}
-        onAddCar={addCar}
-        onUpdateCar={updateCar}
-        onDeleteCar={deleteCar}
-        onLogout={() => { setMerchantLoggedIn(false); setMode('customer'); }}
-      />
-    );
-  }
-
   return (
-    <CustomerApp
-      cars={cars}
-      onSwitchToMerchant={() => setMode('merchant')}
-    />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<CustomerApp cars={cars} />} />
+        <Route
+          path="/merchant"
+          element={
+            merchantLoggedIn
+              ? <MerchantApp
+                  cars={cars}
+                  onAddCar={addCar}
+                  onUpdateCar={updateCar}
+                  onDeleteCar={deleteCar}
+                  onLogout={() => setMerchantLoggedIn(false)}
+                />
+              : <MerchantLogin onLogin={() => setMerchantLoggedIn(true)} />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
