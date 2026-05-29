@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Car } from '../../types';
 import MerchantDashboard from './MerchantDashboard';
 import MerchantListings from './MerchantListings';
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const MerchantApp: React.FC<Props> = ({ cars, onAddCar, onUpdateCar, onDeleteCar, onLogout }) => {
+  const navigate = useNavigate();
   const [tab, setTab] = useState<MerchantTab>('dashboard');
   const [editCar, setEditCar] = useState<Car | null>(null);
 
@@ -53,7 +55,7 @@ const MerchantApp: React.FC<Props> = ({ cars, onAddCar, onUpdateCar, onDeleteCar
           <div className="w-2 h-2 rounded-full bg-green-400" />
           <span className="text-xs font-medium" style={{ color: '#64748b' }}>即時同步中</span>
           <button
-            onClick={onLogout}
+            onClick={() => { onLogout(); navigate('/'); }}
             className="ml-3 p-2 rounded-xl transition-all hover:bg-slate-100"
             style={{ color: '#ef4444' }}
             title="登出"

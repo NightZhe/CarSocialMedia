@@ -26,4 +26,3 @@ export interface FilterState {
   condition: string;
 }
 
-export type AppMode = 'customer' | 'merchant';

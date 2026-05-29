@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, ArrowLeft, Car, Lock } from 'lucide-react';
 
 interface Props {
   onLogin: () => void;
-  onBack: () => void;
 }
 
 const MERCHANT_PASSWORD = 'dealer168';
 
-const MerchantLogin: React.FC<Props> = ({ onLogin, onBack }) => {
+const MerchantLogin: React.FC<Props> = ({ onLogin }) => {
+  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
@@ -30,16 +31,14 @@ const MerchantLogin: React.FC<Props> = ({ onLogin, onBack }) => {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)' }}>
-      {/* Back button */}
       <div className="p-5">
-        <button onClick={onBack} className="flex items-center gap-2 text-white/50 hover:text-white transition-colors">
+        <button onClick={() => navigate('/')} className="flex items-center gap-2 text-white/50 hover:text-white transition-colors">
           <ArrowLeft size={18} />
           <span className="text-sm">返回用戶端</span>
         </button>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 pb-16">
-        {/* Logo */}
         <div className="mb-10 text-center">
           <div className="w-20 h-20 rounded-3xl flex items-center justify-center mb-5 mx-auto" style={{ background: 'linear-gradient(135deg, #1d4ed8, #3b82f6)' }}>
             <Car size={36} className="text-white" />
@@ -48,7 +47,6 @@ const MerchantLogin: React.FC<Props> = ({ onLogin, onBack }) => {
           <p className="text-white/40 text-sm mt-2">Car+ 二手車銷售管理系統</p>
         </div>
 
-        {/* Login form */}
         <div className="w-full max-w-sm">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -87,7 +85,6 @@ const MerchantLogin: React.FC<Props> = ({ onLogin, onBack }) => {
             </button>
           </form>
 
-          {/* Hint */}
           <div className="mt-6 p-4 rounded-2xl text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
             <p className="text-white/30 text-xs">示範密碼：<span className="text-white/60 font-mono font-bold">dealer168</span></p>
           </div>
