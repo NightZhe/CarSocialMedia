@@ -1,107 +1,106 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Car+ 二手精品車
 
-# Run and deploy your AI Studio app
+以行動裝置為主的二手車展示與商家管理 Web App。買家可像短影音一樣垂直滑動瀏覽車輛、搜尋篩選與收藏；車商可在後台新增、編輯與下架車源，變更會即時反映在用戶端。
 
-This contains everything you need to run your app locally.
+## 功能概覽
 
-View your app in AI Studio: https://ai.studio/apps/drive/1s5PPqpXRYKF9gDZGeyBdBKHc2upgufwa
+### 用戶端（`/`）
 
-## Run Locally
+| 分頁 | 說明 |
+|------|------|
+| **瀏覽** | 全螢幕垂直滑動車輛牆（類短影音體驗），支援左右滑動切換多張圖片、收藏、點擊進入詳情 |
+| **搜尋** | 關鍵字與價格、變速箱、燃料、車況等條件篩選 |
+| **收藏** | 收藏清單（資料存於瀏覽器 `localStorage`） |
 
-**Prerequisites:**  Node.js
+車輛詳情頁提供規格、配備、圖片輪播，以及聯絡／洽詢入口（示範用 UI）。
 
+### 商家後台（`/merchant`）
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+| 分頁 | 說明 |
+|------|------|
+| **儀表板** | 車輛總數、可售／已售、總瀏覽、平均售價等統計 |
+| **車輛管理** | 列表檢視、編輯、刪除、切換可售狀態 |
+| **新增車輛** | 表單建立或編輯車源（含圖片 URL、配備等） |
 
-# Cofit Plus：產品進階優化商業提案
+示範登入密碼：`dealer168`（定義於 `components/merchant/MerchantLogin.tsx`）。
 
-> **主題：** 從「工具紀錄」到「沈浸式健康生態」的跨維度升級
+## 技術棧
 
----
+- **前端：** React 19、TypeScript、Vite 6
+- **路由：** react-router-dom
+- **圖示：** lucide-react
+- **樣式：** Tailwind CSS（CDN，`index.html`）
+- **資料：** 瀏覽器 `localStorage`（車輛清單與收藏），內建示範車輛資料
 
-## 第一部分：現狀分析與市場痛點 (The Problem)
+## 專案結構
 
-### 1. 傳統飲食紀錄 App 的三大痛點
-* **高磨擦係數 (High Friction)**
-    * 用戶外食時，手動估算卡路里極其繁瑣，導致用戶流失。
-* **低停留時間 (Low Engagement)**
-    * 紀錄完即離開，缺乏讓用戶「逛起來」的動力。
-* **外食焦慮 (Dining-out Anxiety)**
-    * 用戶知道要健康，但面對外送平台琳瑯滿目的選擇時，往往不知從何點起。
+```
+├── App.tsx                 # 路由、車輛狀態、localStorage 同步
+├── types.ts                # Car、FilterState 型別
+├── index.tsx / index.html
+├── components/
+│   ├── customer/
+│   │   ├── CustomerApp.tsx   # 用戶端主殼層與分頁
+│   │   ├── CarGallery.tsx    # 垂直滑動車輛牆
+│   │   ├── CarDetail.tsx     # 車輛詳情
+│   │   └── SearchFilter.tsx  # 搜尋與篩選
+│   └── merchant/
+│       ├── MerchantLogin.tsx
+│       ├── MerchantApp.tsx
+│       ├── MerchantDashboard.tsx
+│       ├── MerchantListings.tsx
+│       └── CarForm.tsx
+└── railway.json              # Railway 建置與啟動設定
+```
 
----
+### 資料儲存鍵名
 
-## 第二部分：核心優化戰略 (The Solution)
+| 鍵名 | 用途 |
+|------|------|
+| `usedCarSales_v1` | 全站車輛清單（商家編輯後持久化） |
+| `carSales_favs` | 用戶收藏車輛 ID 列表 |
 
-### 戰略一：視覺社交化 —— 「健康版小紅書」
-* **優化方案：** 引入瀑布流 (Waterfall Flow) 探索介面。
-* **行為改變：** 將「紀錄餐點」轉化為「分享生活」。用戶不再只是紀錄，是在探索營養師推薦的食譜、其他用戶的成功案例。
-* **趣味性升級：** 透過精美的圖片標籤，顯示卡路里與 AI 營養點評，讓健康知識變得「可視化且誘人」。
+首次載入若無本地資料，會使用 `App.tsx` 中的 `DEMO_CARS` 示範資料。
 
-### 戰略二：交互沈浸化 —— 「抖音式全螢幕流」
-* **優化方案：** 點擊內容進入 「沈浸模式 (Immersive Feed)」。
-* **行為改變：** 支援上下垂直滑動。透過高效的影音/圖片流，極大化用戶停留時間 (Time Spent)。
-* **AI 即時介入：** 每一張卡片底部標配「AI 營養師即時點評」，用戶在滑動過程中不斷接收健康暗示，建立品牌專業信任。
+## 本地開發
 
-### 戰略三：交易自動化 —— 「Uber Eats 深度集成」
-* **優化方案：** 點餐即紀錄 (Order & Auto-Log)。
-* **行為改變：** 在 App 內直接下單健康餐盒。
-* **核心價值：**
-    * **零摩擦紀錄：** 下單成功的瞬間，系統自動將營養數據寫入日誌。
-    * **AI 智能篩選：** 根據用戶今日剩餘卡路里配額，動態過濾不符合目標的餐廳。
+**需求：** Node.js（建議 18+）
 
----
+```bash
+npm install
+npm run dev
+```
 
-## 第三部分：視覺與產品原型 (The Prototype)
+開發伺服器預設為 `http://localhost:3000`（見 `vite.config.ts`）。
 
-### 1. 首頁：探索與紀錄的交匯
-* **視覺設計：** 採用明亮、清爽的毛玻璃效果 (Glassmorphism)。
-* **交互細節：** 頂部顯示動態卡路里環狀進度條，下方則是用戶分享的健康餐點瀑布流。
+| 指令 | 說明 |
+|------|------|
+| `npm run dev` | 開發模式 |
+| `npm run build` | 建置至 `dist/` |
+| `npm run preview` | 預覽建置結果 |
+| `npm start` | 以 `serve` 提供靜態檔（供部署，埠號由 `$PORT` 決定） |
 
-### 2. 沈浸頁面：社交與專業的結合
-* **右側互動列：** 點讚、評論、收藏。
-* **底部 AI 浮窗：** 半透明黑色背景，文字顯示：「AI 老師：這份午餐蛋白質滿分，建議下午多喝水喔！」
-* **CTA 按鈕：** 明顯的「立即下單 $180」或「加入我的餐盤」。
+## 路由
 
----
+| 路徑 | 說明 |
+|------|------|
+| `/` | 用戶端（瀏覽／搜尋／收藏） |
+| `/merchant` | 商家登入或後台（登入狀態僅存於目前工作階段） |
 
-## 第四部分：商業價值分析 (Business Value)
+## 部署（Railway）
 
-### 1. 用戶數據增長
-* **DAU / MAU 提升：** 社交流將工具屬性轉為娛樂屬性。
-* **Retention (留存率)：** 解決了手動紀錄的麻煩，用戶更願意長期停留。
+專案已設定 `railway.json`：
 
-### 2. 商業化路徑
-* **外送佣金抽成：** 與 Uber Eats 或健康餐飲品牌合作，實現「發現即購買」的轉化分潤。
-* **品牌置入：** 健康品牌可在瀑布流中投放原生廣告內容。
+1. 建置：`npm run build`
+2. 啟動：`npx serve -s dist -l $PORT`
 
----
+將 repo 連結至 Railway 後，推送即可自動建置與部署靜態站點。
 
-## 第五部分：產品發展路線圖 (Roadmap)
+## 車輛資料模型（摘要）
 
-1.  **Phase 1 (MVP)**
-    * 上線瀑布流介面與基本的沈浸式滑動互動。
-2.  **Phase 2 (Integration)**
-    * 串接外送 API，實現「點餐即紀錄」的技術閉環。
-3.  **Phase 3 (AI Pro)**
-    * 導入更精準的 AI 推薦引擎，實現「千人千面」的健康外送推薦。
+每筆 `Car` 包含：品牌、型號、年份、價格、里程、顏色、變速箱、燃料、車況、描述、圖片陣列、配備、是否可售、建立時間、瀏覽次數等。完整定義見 `types.ts`。
 
----
+## 備註
 
-## 結語
-
-> Cofit 的未來不應只是一個「電子秤」，而應該是用戶的「智慧健康採購員」。透過這次優化，我們將讓健康不再是負擔，而是一種充滿趣味與便利的生活風格。
-
----
-
-### 💡 開發人員備註
-上述功能已在以下文件中初步實作：
-* `App.tsx`
-* `Dashboard.tsx
-*  https://www.canva.com/design/DAG-wD8IeJ0/4ryFH2De-YnmJKbU8vRcAg/edit?utm_content=DAG-wD8IeJ0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+- 根目錄下仍有早期 **Cofit 營養 App** 相關檔案（如 `geminiService.ts`、`components/LogFood.tsx`、`AICoach.tsx` 等），**目前未接入** `App.tsx` 主流程，執行 Car+ 不需設定 `GEMINI_API_KEY`。
+- `metadata.json` 中的名稱與描述仍為舊專案文案，若用於 AI Studio 等平台可另行更新。
