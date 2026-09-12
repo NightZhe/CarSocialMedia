@@ -30,13 +30,15 @@
 - **路由：** react-router-dom
 - **圖示：** lucide-react
 - **樣式：** Tailwind CSS（CDN，`index.html`）
-- **資料：** 瀏覽器 `localStorage`（車輛清單與收藏），內建示範車輛資料
+- **資料：** 瀏覽器 `localStorage`（車輛清單與收藏），內建 30 筆示範車輛資料
 
 ## 專案結構
 
 ```
 ├── App.tsx                 # 路由、車輛狀態、localStorage 同步
 ├── types.ts                # Car、FilterState 型別
+├── data/
+│   └── demoCars.ts         # 30 筆示範車輛資料與圖庫對照表
 ├── index.tsx / index.html
 ├── components/
 │   ├── customer/
@@ -57,10 +59,12 @@
 
 | 鍵名 | 用途 |
 |------|------|
-| `usedCarSales_v1` | 全站車輛清單（商家編輯後持久化） |
+| `usedCarSales_v2` | 全站車輛清單（商家編輯後持久化） |
 | `carSales_favs` | 用戶收藏車輛 ID 列表 |
 
-首次載入若無本地資料，會使用 `App.tsx` 中的 `DEMO_CARS` 示範資料。
+首次載入若無本地資料，會使用 `data/demoCars.ts` 中的 `DEMO_CARS` 示範資料（30 筆，涵蓋 18 個品牌）。
+
+該檔案上方的 `IMG` 對照表把每個圖片 ID 對應到照片實際內容（例如 `suvWhiteHonda`、`bmwGrey`），新增車輛時請沿用既有 key，不要直接貼入未經確認的網址。
 
 ## 本地開發
 
